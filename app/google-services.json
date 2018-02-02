@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "726892777363",
+    "firebase_url": "https://superkotlin.firebaseio.com",
+    "project_id": "superkotlin",
+    "storage_bucket": "superkotlin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726892777363:android:ffe544c442165817",
+        "android_client_info": {
+          "package_name": "com.xsa.mobilityfriday.superkotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726892777363-vl2eg7j2cfok0sp2u8qkvokeak9e65ec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xsa.mobilityfriday.superkotlin",
+            "certificate_hash": "fceb2b8feec35b03351b4b765cb6d9781d4cd4ce"
+          }
+        },
+        {
+          "client_id": "726892777363-09bv8onbsekd7hlnlet753hnf67o3d1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDpzf7-XduNADCfaNWNrNulxf87vgXdc4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726892777363-09bv8onbsekd7hlnlet753hnf67o3d1r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
