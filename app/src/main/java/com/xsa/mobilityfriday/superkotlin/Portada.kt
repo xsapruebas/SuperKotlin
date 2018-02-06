@@ -2,26 +2,28 @@ package com.xsa.mobilityfriday.superkotlin
 
 import android.content.Context
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_portada.*
 import kotlinx.android.synthetic.main.item_superhero_list.view.*
-
+import org.jetbrains.anko.*
 
 class Portada : AppCompatActivity() {
 
@@ -30,25 +32,38 @@ class Portada : AppCompatActivity() {
 
     var dbSuperHero = FirebaseDatabase.getInstance()
     var myRef = dbSuperHero.reference
+    val superheros: MutableList<SuperHero> = ArrayList()
 
-    var storageRef = FirebaseStorage.getInstance().reference
+    val progress_bar: ProgressBar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_portada)
-        setUpRecyclerView()
+        //cargarSuperheros()
+        verticalLayout {
+            padding = dip(30)
+            val progress_bar = progressBar {
+                visibility = View.VISIBLE
+            }.lparams {
+                height = wrapContent
+                width = matchParent
+                gravity = Gravity.CENTER
+            }
+        }
+        AsyncTaskExample().execute()
     }
 
-    fun setUpRecyclerView() {
+    fun setUpRecyclerView(lista: MutableList<SuperHero>) {
         mRecyclerView = rvSuperheroList as RecyclerView
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mAdapter.RecyclerAdapter(cargarSuperheros(), this)
+        mAdapter.RecyclerAdapter(lista, this)
         mRecyclerView.adapter = mAdapter
     }
 
     fun cargarSuperheros(): MutableList<SuperHero> {
-        val superheros: MutableList<SuperHero> = ArrayList()
+        //val superheros: MutableList<SuperHero> = ArrayList()
         myRef.child("SuperHero").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot?) {
                 val it = snapshot!!.children.iterator()
@@ -64,22 +79,52 @@ class Portada : AppCompatActivity() {
                     var descripcion = info.child("Descripcion").value
                     var avatar = info.child("Avatar").value
                     superheros.add(SuperHero(nombre.toString(), nombreReal.toString(), publisher.toString(), descripcion.toString(), avatar.toString()))
-                    Log.i("INFO", "FINAL " + superheros.count().toString())
                 }
+                setUpRecyclerView(superheros)
             }
 
             override fun onCancelled(snapshot: DatabaseError?) {
                 Log.e("ERROR", "Algo no ha funcionado bien")
             }
         })
-        Log.i("INFO", "FINAL " + superheros.count().toString())
         return superheros
     }
+
+    inner class AsyncTaskExample : AsyncTask<String, MutableList<SuperHero>, MutableList<SuperHero>>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            progress_bar.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: String?): MutableList<SuperHero> {
+
+            var result: MutableList<SuperHero> = ArrayList<SuperHero>()
+
+            try {
+                cargarSuperheros()
+            } catch (Ex: Exception) {
+                Log.d("", "Error in doInBackground " + Ex.message)
+            }
+            return result
+        }
+
+        override fun onPostExecute(result: MutableList<SuperHero>) {
+            super.onPostExecute(result)
+
+            if (result != null) {
+                setUpRecyclerView(result)
+            }
+
+            progress_bar.visibility = View.GONE
+        }
+    }
+
 }
 
 data class SuperHero(
-        val nombre: String,
-        val nombreReal: String,
+        var nombre: String,
+        var nombreReal: String,
         var publisher: String,
         var descripcion: String,
         var avatar: String)

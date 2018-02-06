@@ -1,15 +1,17 @@
 package com.xsa.mobilityfriday.superkotlin
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
+import android.text.InputType.TYPE_CLASS_TEXT
+import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import kotlinx.android.synthetic.main.activity_principal.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import org.jetbrains.anko.*
 
 
 class Principal : AppCompatActivity() {
@@ -21,10 +23,27 @@ class Principal : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
 
+        verticalLayout {
+            padding = dip(30)
+            val email = editText {
+                hint = "Name"
+                textSize = 24f
+            }
+            val password = editText {
+                hint = "Password"
+                textSize = 24f
+                inputType = TYPE_CLASS_TEXT or TYPE_TEXT_VARIATION_PASSWORD
+            }
+            button("Login") {
+                textSize = 26f
+                setOnClickListener { signIn(email.text.toString(), password.text.toString()) }
+            }
+        }
+
         mAuth = FirebaseAuth.getInstance()
 
-        email_sign_in_button.setOnClickListener { signIn(field_email.text.toString(), field_password.text.toString()) }
-        email_create_account_button.setOnClickListener { createAccount(field_email.text.toString(), field_password.text.toString()) }
+        //email_sign_in_button.setOnClickListener { signIn(field_email.text.toString(), field_password.text.toString()) }
+        //email_create_account_button.setOnClickListener { createAccount(field_email.text.toString(), field_password.text.toString()) }
 
     }
 
@@ -34,7 +53,7 @@ class Principal : AppCompatActivity() {
     }
 
     fun createAccount(email: String, password: String) {
-        if (validarCampos()) {
+        if (validarCampos(email, password)) {
             mAuth?.createUserWithEmailAndPassword(email, password)?.addOnCompleteListener { task: Task<AuthResult> ->
                 if (task.isSuccessful) {
                     //Registration OK
@@ -49,7 +68,7 @@ class Principal : AppCompatActivity() {
     }
 
     fun signIn(email: String, password: String) {
-        if (validarCampos()) {
+        if (validarCampos(email, password)) {
             mAuth?.signInWithEmailAndPassword(email, password)?.addOnCompleteListener { task: Task<AuthResult> ->
                 if (task.isSuccessful) {
                     // Log in correcto
@@ -68,13 +87,8 @@ class Principal : AppCompatActivity() {
     }
 
     // Comprobar que los campos no están vacíos antes de hacer ninguna llamada
-    fun validarCampos(): Boolean {
+    fun validarCampos(email: String, password: String): Boolean {
         var valido = true
-
-        //CAMBIAR POR EL CAMPO DEL EMAIL
-        val email = field_email.text.toString()
-        //CAMBIAR POR EL CAMPO DEL PASSWORD
-        val password = field_password.text.toString()
 
         if (email.isEmpty()) {
             // Error

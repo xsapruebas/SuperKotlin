@@ -5,8 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 
-import kotlinx.android.synthetic.main.content_personaje.*
-
+import kotlinx.android.synthetic.main.activity_personaje.*
 
 class Personaje : AppCompatActivity() {
 
@@ -22,4 +21,3 @@ class Personaje : AppCompatActivity() {
         Picasso.with(context).load(url).into(this)
     }
 }
-
