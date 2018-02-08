@@ -25,7 +25,6 @@ class Principal : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_principal)
 
         verticalLayout {
             backgroundResource = R.mipmap.ic_superkotlin2
@@ -46,9 +45,6 @@ class Principal : AppCompatActivity() {
         }
 
         mAuth = FirebaseAuth.getInstance()
-
-        //email_sign_in_button.setOnClickListener { signIn(field_email.text.toString(), field_password.text.toString()) }
-        //email_create_account_button.setOnClickListener { createAccount(field_email.text.toString(), field_password.text.toString()) }
 
     }
 
