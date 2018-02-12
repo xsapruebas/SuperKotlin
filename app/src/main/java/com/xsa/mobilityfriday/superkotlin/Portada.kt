@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_portada.*
 import kotlinx.android.synthetic.main.item_superhero_list.view.*
+import org.jetbrains.anko.intentFor
 
 class Portada : AppCompatActivity() {
 
@@ -35,6 +36,11 @@ class Portada : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_portada)
         AsyncTaskExample().execute()
+
+        fab.setOnClickListener {
+            startActivity(intentFor<CrearSuperHero>("Prueba" to "Ha pasado"))
+        }
+
     }
 
     fun setUpRecyclerView(lista: MutableList<SuperHero>) {

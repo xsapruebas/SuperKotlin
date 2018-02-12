@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Portada" />
+        <activity android:name=".CrearSuperHero" />
         <activity
             android:name=".Personaje"
             android:label="@string/title_activity_personaje"

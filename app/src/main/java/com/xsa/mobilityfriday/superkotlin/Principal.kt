@@ -25,7 +25,7 @@ class Principal : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        // Interfaz del login
         verticalLayout {
             backgroundResource = R.mipmap.ic_superkotlin2
             padding = dip(30)
@@ -38,14 +38,17 @@ class Principal : AppCompatActivity() {
                 textSize = 24f
                 inputType = TYPE_CLASS_TEXT or TYPE_TEXT_VARIATION_PASSWORD
             }
+
             button("Login") {
                 textSize = 26f
                 setOnClickListener { signIn() }
             }
+            button("Create") {
+                textSize = 26f
+                setOnClickListener { createAccount() }
+            }
         }
-
         mAuth = FirebaseAuth.getInstance()
-
     }
 
     override fun onStart() {
